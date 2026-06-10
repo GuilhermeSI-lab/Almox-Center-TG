@@ -150,6 +150,28 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
+// Rota para página de Cadastro
+app.get('/cadastro', (req, res) => {
+    res.render('cadastro');
+});
+
+// Rota para salvar novo item
+app.post('/cadastro', (req, res) => {
+    const { categoria, tipo, tamanho, quantidade } = req.body;
+    
+    const novoId = Math.max(...inventario.map(i => i.id)) + 1;
+    
+    inventario.push({
+        id: novoId,
+        categoria,
+        tipo,
+        tamanho,
+        quantidade: parseInt(quantidade) || 0
+    });
+
+    req.flash('success_msg', 'Item cadastrado com sucesso!');
+    res.redirect('/inventario');
+});
 
 // Inicia o servidor
 app.listen(PORT, () => {
